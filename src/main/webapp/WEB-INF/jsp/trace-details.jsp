@@ -2,4 +2,4 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="../layout/taglib.jsp"%>
 
-MNV work!
+<h1>Szczegóły ${trace.id}</h1>
