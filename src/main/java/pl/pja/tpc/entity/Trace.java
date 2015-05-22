@@ -1,5 +1,7 @@
 package pl.pja.tpc.entity;
 
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,7 +30,40 @@ public class Trace {
 
 	@Column(name="destination_street_number")
 	private String destinationStreetNumber;
+
+	@Column(name="date")
+	private Date date;
 	
+	@Column(name="time")
+	private String time;
+	
+	@Column(name="car_or_bus")
+	private String carOrBus;
+	
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	public String getCarOrBus() {
+		return carOrBus;
+	}
+
+	public void setCarOrBus(String carOrBus) {
+		this.carOrBus = carOrBus;
+	}
 
 	public String getSourceCity() {
 		return sourceCity;
