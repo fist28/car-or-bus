@@ -2,18 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="../layout/taglib.jsp"%>
 
-<!-- Header -->
-<header>
-	<div class="container">
-		<div class="intro-text">
-			<div class="intro-lead-in">Car or BUS</div>
-			<div class="intro-heading">It will be faster!</div>
-			<a href="#services" class="page-scroll btn btn-xl">Get started
-				now!</a>
-		</div>
-	</div>
-</header>
-
 <!-- Services Section -->
 <section id="find">
 	<div class="container">
@@ -90,58 +78,24 @@
 						<th>From</th>
 						<th>To</th>
 						<th>Time</th>
+						<th>Distance</th>
 						<th>Car or BUS</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach items="${traces}" var="trace">
 						<tr class="clickable-row text-left" data-href="<spring:url value="/traces/${trace.id}.html" />">
-							<td></td>
-							<td>${trace.sourceCity}, ${trace.sourceStreet} ${trace.sourceStreetNumber} </td>
-							<td>${trace.destinationCity}, ${trace.destinationStreet} ${trace.destinationStreetNumber} </td>
-							<td>${trace.time}</td>
-							<td>${trace.carOrBus}</td>		
+							<td>${trace.getDate("yyyy/MM/dd HH:mm:ss")}</td>
+							<td>${trace.startAddress} </td>
+							<td>${trace.endAddress} </td>
+							<td>${trace.duration}</td>
+							<td>${trace.distance}</td>
+							<td><i
+						class="${trace.getCarOrBusClass()}" title="${trace.getCarOrBus()}"></i></td>		
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
-	</div>
-</section>
-
-<!-- Team Section -->
-<section id="team" class="bg-light-gray">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12 text-center">
-				<h2 class="section-heading">Our Amazing Team</h2>
-				<!-- <h3 class="section-subheading text-muted">Lorem ipsum dolor sit
-					amet consectetur.</h3> -->
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-12">
-				<div class="team-member">
-					<img
-						src="https://s.gravatar.com/avatar/702d17f7cf3ff82ba18b51eea74cf47b?s=120"
-						class="img-responsive img-circle" alt="">
-					<h4>Filip Stybel</h4>
-					<p class="text-muted">Developer</p>
-					<ul class="list-inline social-buttons">
-						<li><a href="https://github.com/fist28" target="_blank"><i
-								class="fa fa-github"></i></a></li>
-						<li><a href="https://pl.linkedin.com/in/filipstybel"
-							target="_blank"><i class="fa fa-linkedin"></i></a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		<!-- <div class="row">
-			<div class="col-lg-8 col-lg-offset-2 text-center">
-				<p class="large text-muted">Lorem ipsum dolor sit amet,
-					consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos
-					non quis ad perspiciatis, totam corporis ea, alias ut unde.</p>
-			</div>
-		</div> -->
 	</div>
 </section>

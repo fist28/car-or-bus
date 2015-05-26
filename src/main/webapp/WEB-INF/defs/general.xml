@@ -8,22 +8,13 @@
 	</definition>
 
 	<definition name="index" extends="common">
-		<put-attribute name="title" value="Tiles tutorial homepage" />
+		<put-attribute name="title" value="Car or Bus" />
 		<put-attribute name="body" value="/WEB-INF/jsp/index.jsp" />
 	</definition>
 
-	<definition name="traces" extends="common">
-		<put-attribute name="title" value="Wyznaczone trasy" />
-		<put-attribute name="body" value="/WEB-INF/jsp/traces.jsp" />
-	</definition>
-
 	<definition name="trace-detail" extends="common">
-		<put-attribute name="title" value="Szczegóły trasy" />
+		<put-attribute name="title" value="Trace details" />
 		<put-attribute name="body" value="/WEB-INF/jsp/trace-details.jsp" />
 	</definition>
 
-	<definition name="new-trace" extends="common">
-		<put-attribute name="title" value="Nowa trasa" />
-		<put-attribute name="body" value="/WEB-INF/jsp/new-trace.jsp" />
-	</definition>
 </tiles-definitions> 

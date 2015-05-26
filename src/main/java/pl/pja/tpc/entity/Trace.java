@@ -1,6 +1,11 @@
 package pl.pja.tpc.entity;
 
-import java.sql.Date;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,50 +18,110 @@ public class Trace {
 	@GeneratedValue
 	private Integer id;
 
-	@Column(name="source_city")
+	@Column(name = "source_city")
 	private String sourceCity;
-	
-	@Column(name="source_street")
+
+	@Column(name = "source_street")
 	private String sourceStreet;
 
-	@Column(name="source_street_number")
+	@Column(name = "source_street_number")
 	private String sourceStreetNumber;
 
-	@Column(name="destination_city")
+	@Column(name = "destination_city")
 	private String destinationCity;
 
-	@Column(name="destination_street")
+	@Column(name = "destination_street")
 	private String destinationStreet;
 
-	@Column(name="destination_street_number")
+	@Column(name = "destination_street_number")
 	private String destinationStreetNumber;
 
-	@Column(name="date")
+	@Column(name = "date")
 	private Date date;
-	
-	@Column(name="time")
-	private String time;
-	
-	@Column(name="car_or_bus")
-	private String carOrBus;
-	
 
-	public Date getDate() {
-		return date;
+	@Column(name = "car_or_bus")
+	private String carOrBus;
+
+	private String distance;
+
+	private String duration;
+
+	@Column(name = "start_address")
+	private String startAddress;
+
+	@Column(name = "end_address")
+	private String endAddress;
+
+	public String getDistance() {
+		return distance;
+	}
+
+	public void setDistance(String distance) {
+		this.distance = distance;
+	}
+
+	public String getDuration() {
+		return duration;
+	}
+
+	public void setDuration(String duration) {
+		this.duration = duration;
+	}
+
+	public String getStartAddress() {
+		return startAddress;
+	}
+
+	public String getEncodeStartAddress() {
+		try {
+			return URLEncoder.encode(startAddress, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			return "";
+		}
+	}
+
+	public void setStartAddress(String startAddress) {
+		this.startAddress = startAddress;
+	}
+
+	public String getEndAddress() {
+		return endAddress;
+	}
+
+	public String getEncodeEndAddress() {
+		try {
+			return URLEncoder.encode(endAddress, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			return "";
+		}
+	}
+
+	public void setEndAddress(String endAddress) {
+		this.endAddress = endAddress;
+	}
+
+	public String getDate(String format) {
+		if (format == null) {
+			return date.toString();
+		} else {
+			DateFormat dateFormat = new SimpleDateFormat(format);
+			Calendar cal = Calendar.getInstance();
+			return dateFormat.format(cal.getTime());
+		}
 	}
 
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
-	public String getTime() {
-		return time;
+	
+	public String getCarOrBusClass() {
+		if(carOrBus.contains("transit")){
+			return "fa-bus";
+		} else {
+			return "fa fa-car";
+		}
 	}
-
-	public void setTime(String time) {
-		this.time = time;
-	}
-
+	
 	public String getCarOrBus() {
 		return carOrBus;
 	}
@@ -120,6 +185,5 @@ public class Trace {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
-	
+
 }
