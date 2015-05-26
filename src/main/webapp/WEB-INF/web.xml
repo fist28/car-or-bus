@@ -26,9 +26,14 @@
 		<url-pattern>*.json</url-pattern>
 		<url-pattern>*.xmls</url-pattern>
 	</servlet-mapping>
-	
+
 	<listener>
-	    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
+
+	<context-param>
+		<param-name>spring.profiles.default</param-name>
+		<param-value>prod</param-value>
+	</context-param>
 </web-app>
