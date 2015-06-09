@@ -3,7 +3,18 @@
 	xmlns="http://java.sun.com/xml/ns/javaee"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
+	
 	<display-name>car-or-bus</display-name>
+	
+	<filter>
+	  <filter-name>Character Encoding Filter</filter-name>
+	  <filter-class>pl.pja.tpc.filter.CharacterEncodingFilter</filter-class>
+	  <init-param>
+	    <param-name>encoding</param-name>
+	    <param-value>UTF-8</param-value>
+	  </init-param>
+	</filter>
+	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>
@@ -36,4 +47,9 @@
 		<param-name>spring.profiles.default</param-name>
 		<param-value>prod</param-value>
 	</context-param>
+	
+	<filter-mapping>
+	  <filter-name>Character Encoding Filter</filter-name>
+	  <url-pattern>/*</url-pattern>
+	</filter-mapping>
 </web-app>
