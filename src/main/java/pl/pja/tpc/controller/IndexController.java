@@ -16,33 +16,17 @@ public class IndexController {
 
 	@Autowired
 	private TraceService traceService;
-		
+	
 	@RequestMapping("/index")
 	public String index(Model model) {
-		model.addAttribute("traces", traceService.findAll());
+		model.addAttribute("traces", traceService.findLast());
 		return "index";
-	}
-		
-	@ModelAttribute("trace")
-	public Trace construct() {
-		return new Trace();
-	}
-	
-	@RequestMapping("/traces")
-	public String traces(Model model) {
-		model.addAttribute("traces", traceService.findAll());
-		return "traces";
 	}
 	
 	@RequestMapping("/traces/{id}")
 	public String detail(Model model, @PathVariable int id){
 		model.addAttribute("trace", traceService.findOne(id));
 		return "trace-detail";
-	}
-	
-	@RequestMapping("/traces/new")
-	public String new_trace(){
-		return "new-trace";
 	}
 	
 	@RequestMapping(value="/index", method=RequestMethod.POST)

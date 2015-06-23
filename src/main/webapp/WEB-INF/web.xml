@@ -6,6 +6,7 @@
 	
 	<display-name>car-or-bus</display-name>
 	
+	<!-- Na potrzeby zachowana kodwania UTF-8 -->
 	<filter>
 	  <filter-name>Character Encoding Filter</filter-name>
 	  <filter-class>pl.pja.tpc.filter.CharacterEncodingFilter</filter-class>
@@ -43,11 +44,13 @@
 	</listener>
 
 
+	<!-- Domylślnie środowiskiem jest prod -->
 	<context-param>
 		<param-name>spring.profiles.default</param-name>
 		<param-value>prod</param-value>
 	</context-param>
 	
+	<!-- Na potrzeby zachowana kodwania UTF-8 -->
 	<filter-mapping>
 	  <filter-name>Character Encoding Filter</filter-name>
 	  <url-pattern>/*</url-pattern>

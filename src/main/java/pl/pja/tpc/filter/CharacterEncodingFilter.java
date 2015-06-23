@@ -9,7 +9,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+/**
+ * Klasa na potrzeby zachowania kodowania UTF-8 podczas przesyłania requestów
+ */
 public class CharacterEncodingFilter implements Filter {
 
     private String encoding = "UTF-8";

@@ -6,7 +6,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -14,19 +13,12 @@ import java.util.regex.Pattern;
 
 import javax.transaction.Transactional;
 
-
-
-//
-//import org.json.JSONArray;
-//import org.json.JSONObject;
-import org.omg.DynamicAny.NameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -39,16 +31,32 @@ public class TraceService {
 	@Autowired
 	private TraceRepository traceRepository;
 
+	/**
+	 * Metoda pobiera wszystkie trasy z bazy danych
+	 * @return Lista wszystkich tras
+	 */
 	public List<Trace> findAll() {
 		return traceRepository.findAll();
 	}
 
-	public Object findOne(int id) {
+	/**
+	 * Metoda pobiera z bazy danych trase o podanym id
+	 * @param id szukanej trasy
+	 * @return Obiekt trasy
+	 */
+	public Trace findOne(int id) {
 		return traceRepository.findOne(id);
 	}
 
+	/**
+	 * Metoda na poodstawie obiektu Trace pobiera czas przejazdu z Google Maps Api z punktu startowego do punktu docelowego.
+	 * Następnie wybierana jest szybsza trasa o zapisywane w bazie danych informacje o niej 
+	 * Dokumentacjia API - https://developers.google.com/maps/documentation/directions/
+	 * 
+	 * @param obiekt trace posiadający wypełnione dane dotyczące punktu startowego i docelowego trasy
+	 * @return id zapisanego w bazie danych obiektu trace
+	 */
 	public int save(Trace trace) {
-//		https://developers.google.com/maps/documentation/directions/
 		String transit = mapApiQuery(trace, "transit");
 		String driving = mapApiQuery(trace, "driving");
 
@@ -62,9 +70,7 @@ public class TraceService {
 			data = driving;
 			trace.setCarOrBus("driving");
 		}
-		
-		System.out.println(data);
-		
+				
 		trace.setStartAddress(parseSimpleJson(data, "start_address"));
 		trace.setEndAddress(parseSimpleJson(data, "end_address"));
 		trace.setDistance(parseNestedJson(data, "distance", "text", 1));
@@ -75,6 +81,13 @@ public class TraceService {
 		return trace.getId();
 	}
 
+	/**
+	 * Metoda parsująca Jsona bez zagnieżdżenia. 
+	 * Metoda korzysta z wyrażeń regularnych do pobrania wartości.
+	 * @param input - String z jsonem
+	 * @param key - String z kluczem którego szukamy
+	 * @return String ze znalezioną pierwszą wartością dla klucza. W przypadku nie znalezienia szukanego klucza zwróci null
+	 */
 	private String parseSimpleJson(String input, String key) {
 		String pattern = "\""+ key + "\" : \"([^\"]*)\"";
 		Pattern r = Pattern.compile(pattern);
@@ -86,9 +99,17 @@ public class TraceService {
 		}
 	}
 	
+	/**
+	 * Metoda parsująca Jsona z zagnieżdżeniem pierwszego stopnia.
+	 * Metoda korzysta z wyrażeń regularnych do pobrania wartości.
+	 * @param input - String z jsonem
+	 * @param key - String z kluczem którego szukamy
+	 * @param subKey - String z nazwą klucza 'rodzica'
+	 * @param match - int z numerem dopasowania którego szukamy
+	 * @return String ze znalezioną (dopasowanie zgodne z parametrem match) wartością dla klucza. W przypadku nie znalezienia szukanego klucza zwróci null
+	 */
 	private String parseNestedJson(String input, String key, String subKey, int match) {
 		String pattern = "\""+ key +"\" : \\{[^\\}]* \""+ subKey +"\" : ((\\d+)|\"?([\\w. ]+)\"?)";
-		System.out.println(pattern);
 		Pattern r = Pattern.compile(pattern);
 		Matcher m = r.matcher(input);
 		if (m.find()) {
@@ -98,6 +119,12 @@ public class TraceService {
 		}
 	}
 
+	/**
+	 * Metoda wykonuje request do API Maps Google oraz otrzymuje odpowiedź w formie jsona
+	 * @param trace - obiekt Trace zawierający parametry dotyczące punku startowego oraz końcowego
+	 * @param mode - Rodzaj sprawdzanego środka transportu, możliwe parametry znajdują się w dokumentacji API - https://developers.google.com/maps/documentation/directions/#TravelModes
+	 * @return Stringa zawierajacego JSON z odpoweidzią z API
+	 */
 	private String mapApiQuery(Trace trace, String mode) {
 		URL obj;
 		StringBuffer response = new StringBuffer();
@@ -120,7 +147,6 @@ public class TraceService {
 					+ "key=AIzaSyCPFbpY3mLqwrOaamzM2mQN0gw3zHboNVE";
 
 			URI uri = new URI(query + params);
-			System.out.println(uri);
 			obj = uri.toURL();
 
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -144,8 +170,12 @@ public class TraceService {
 		return response.toString();
 	}
 
-	public Object findLast() {
+	/** 	
+	 * Metoda wyszukuje ostatnie 10 wyszukiwanych tras
+	 * @return Lista 10 ostatnich tras
+	 */
+	public List<Trace> findLast() {
 		return traceRepository.findAll(new PageRequest(0, 10, Direction.DESC,
-				"date"));
+				"date")).getContent();
 	}
 }

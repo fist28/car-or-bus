@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -72,6 +71,10 @@ public class Trace {
 		return startAddress;
 	}
 
+	/**
+	 * Konwertowanie adresu punktu początkowego do postaci zgodnej ze standardami adresu URL
+	 * @return Przekonwertowany adres początkowy
+	 */
 	public String getEncodeStartAddress() {
 		try {
 			return URLEncoder.encode(startAddress, "UTF-8");
@@ -88,6 +91,10 @@ public class Trace {
 		return endAddress;
 	}
 
+	/**
+	 * Konwertowanie adresu punktu końcowego do postaci zgodnej ze standardami adresu URL
+	 * @return Przekonwertowany adres końcowy
+	 */
 	public String getEncodeEndAddress() {
 		try {
 			return URLEncoder.encode(endAddress, "UTF-8");
@@ -100,13 +107,17 @@ public class Trace {
 		this.endAddress = endAddress;
 	}
 
+	/**
+	 * 
+	 * @param format - format daty w postaci Stringa zgodny z dokumnetacją dla java.text.SimpleDateFormat.SimpleDateFormat(String pattern)
+	 * @return String z datą zgodną z podanym formatem, jeżel format jest null wtedy data zostanie wyświetlona w domyślnym formacie
+	 */
 	public String getDate(String format) {
 		if (format == null) {
 			return date.toString();
 		} else {
 			DateFormat dateFormat = new SimpleDateFormat(format);
-			Calendar cal = Calendar.getInstance();
-			return dateFormat.format(cal.getTime());
+			return dateFormat.format(date);
 		}
 	}
 
@@ -114,6 +125,10 @@ public class Trace {
 		this.date = date;
 	}
 	
+	/**
+	 * Klasa z Bootsrapa przedstawiająca środek komunikacji.
+	 * @return String - klase css dla danego środka transportu 
+	 */
 	public String getCarOrBusClass() {
 		if(carOrBus.contains("transit")){
 			return "fa-bus";
